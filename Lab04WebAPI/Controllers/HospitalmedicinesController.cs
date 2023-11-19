@@ -12,7 +12,7 @@ using AutoMapper;
 
 namespace Lab04WebAPI.Controllers
 {
-    //[ApiController]
+    [ApiController]
     [Route("api/HospitalMedicines")]
     public class HospitalmedicinesController : Controller
     {
@@ -37,7 +37,7 @@ namespace Lab04WebAPI.Controllers
                 var Hospitalmedicines = await _context.Hospitalmedicines.ToListAsync();
                 var hospitalMedicinesViewModels = _mapper.Map<List<HospitalmedicineViewModel>>(Hospitalmedicines);
 
-                return View(hospitalMedicinesViewModels);
+                return Json(hospitalMedicinesViewModels);
             }
             else
             {
@@ -62,9 +62,9 @@ namespace Lab04WebAPI.Controllers
             {
                 return NotFound();
             }
-            var hospitalmedicineVM = _mapper.Map<HospitaldoctorViewModel>(hospitalmedicine);
+            var hospitalmedicineVM = _mapper.Map<HospitalmedicineViewModel>(hospitalmedicine);
 
-            return View(hospitalmedicineVM);
+            return Json(hospitalmedicineVM);
         }
         [HttpGet("Create")]
         // GET: Hospitalmedicines/Create
@@ -76,11 +76,13 @@ namespace Lab04WebAPI.Controllers
         // POST: Hospitalmedicines/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // GET api/values
+        
         [HttpPost("Create")]
-        [SwaggerOperation("CreateHospitalMedicine")]
-        [SwaggerResponse(200, "Created", typeof(HospitalmedicineViewModel))]
-        [SwaggerResponse(400, "Bad Request")]
-        public async Task<IActionResult> Create([FromForm] HospitalmedicineViewModel hospitalmedicineVM){
+        [SwaggerOperation(Summary = "Get Hospital Medicine by ID", Description = "Get details of a specific hospital medicine by its ID.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Successfully added!", typeof(HospitalmedicineViewModel))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Bad Request, problem somewhere")]
+        public async Task<IActionResult> Create([FromBody] HospitalmedicineViewModel hospitalmedicineVM){
 
             var hospitalmedicine = _mapper.Map<Hospitalmedicines>(hospitalmedicineVM);
 
@@ -90,7 +92,7 @@ namespace Lab04WebAPI.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(hospitalmedicineVM);
+            return Json(hospitalmedicineVM);
         }
 
         // GET: Hospitalmedicines/Edit/5
@@ -108,9 +110,9 @@ namespace Lab04WebAPI.Controllers
             {
                 return NotFound();
             }
-            var hospitalmedicineVM = _mapper.Map<HospitaldoctorViewModel>(hospitalmedicine);
+            var hospitalmedicineVM = _mapper.Map<HospitalmedicineViewModel>(hospitalmedicine);
 
-            return View(hospitalmedicineVM);
+            return Json(hospitalmedicineVM);
         }
 
         // POST: Hospitalmedicines/Edit/5
@@ -118,7 +120,7 @@ namespace Lab04WebAPI.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("Edit/{id}")]
         [SwaggerOperation("UpdateHospitalMedicine")]
-        public async Task<IActionResult> Edit(int id, [FromForm] HospitalmedicineViewModel hospitalmedicineVM)
+        public async Task<IActionResult> Edit(int id, [FromBody] HospitalmedicineViewModel hospitalmedicineVM)
         {
             if (id != hospitalmedicineVM.MedicineId)
             {
@@ -147,7 +149,7 @@ namespace Lab04WebAPI.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(hospitalmedicineVM);
+            return Json(hospitalmedicineVM);
         }
 
         // GET: Hospitalmedicines/Delete/5
@@ -166,10 +168,10 @@ namespace Lab04WebAPI.Controllers
             {
                 return NotFound();
             }
-            var hospitalmedicineVM = _mapper.Map<HospitaldoctorViewModel>(hospitalmedicine);
+            var hospitalmedicineVM = _mapper.Map<HospitalmedicineViewModel>(hospitalmedicine);
 
 
-            return View(hospitalmedicineVM);
+            return Json(hospitalmedicineVM);
         }
 
         // POST: Hospitalmedicines/Delete/5

@@ -11,11 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<Context>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Test1Connection")));
-/*builder.Services.AddSwaggerGen(c => {
+builder.Services.AddSwaggerGen(c => {
     c.IgnoreObsoleteActions();
     c.IgnoreObsoleteProperties();
     c.CustomSchemaIds(type => type.FullName);
-});*/
+    c.EnableAnnotations();
+   
+});
 
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
@@ -24,12 +26,12 @@ builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 var app = builder.Build();
 
 // Configure method
-/*app.UseSwagger();
+app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Just API");
     c.RoutePrefix = string.Empty; // Swagger UI will be at the root URL
-});*/
+});
 
 
 // Configure the HTTP request pipeline.
